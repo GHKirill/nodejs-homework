@@ -9,7 +9,7 @@ const auth = async (req, res, next) => {
   const [bearer, token] = authorization.split(" ");
 
   try {
-    if (bearer !== "Bearer") {
+    if (bearer !== "Bearer" || !token) {
       throw new CustomHttpError(401, "Not authorized");
     }
     const { id } = jwt.verify(token, JWT_SECRET_KEY);
