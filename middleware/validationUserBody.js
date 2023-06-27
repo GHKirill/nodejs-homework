@@ -1,10 +1,10 @@
 const createError = require("http-errors");
 
-const validationBody = (schema) => {
+const validationUserBody = (schema) => {
   return (req, res, next) => {
     const body = req.body;
     const bodyFields = Object.keys(body);
-    const essentialBodyFields = ["name", "email", "phone"];
+    const essentialBodyFields = ["email", "password"];
     const resultBodyError = essentialBodyFields.filter(
       (item) => !bodyFields.includes(item)
     );
@@ -27,18 +27,5 @@ const validationBody = (schema) => {
     next();
   };
 };
-const validationStatus = (schema) => {
-  return (req, res, next) => {
-    const body = req.body;
-    const { error } = schema.validate(body);
-    if (error) {
-      const newError = createError(
-        400,
-        `field "favorite" should be only "true" or "false"`
-      );
-      next(newError);
-    }
-    next();
-  };
-};
-module.exports = { validationBody, validationStatus };
+
+module.exports = validationUserBody;

@@ -9,10 +9,10 @@ const updateContactStatus = async (req, res, next) => {
 
   const result = await Contact.findByIdAndUpdate(
     contactId,
-    { favorite },
     {
-      new: true,
-    }
+      $set: { favorite },
+    },
+    { new: true }
   );
   if (!result) {
     throw createError(404, `Contact with id = ${contactId} is not found `);

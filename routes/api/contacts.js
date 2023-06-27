@@ -4,6 +4,7 @@ const {
   validationBody,
   validationStatus,
   ctrlWrapper,
+  auth,
 } = require("../../middleware");
 
 const { joiSchema, favoriteJoiSchema } = require("../../models");
@@ -12,11 +13,11 @@ const validateStatusMiddleware = validationStatus(favoriteJoiSchema);
 
 const router = express.Router();
 
-router.get("/", ctrlWrapper(ctrl.getAll));
+router.get("/", auth, ctrlWrapper(ctrl.getAll));
 
 router.get("/:contactId", ctrlWrapper(ctrl.getContactsById));
 
-router.post("/", validateBodyMiddleware, ctrlWrapper(ctrl.addContact));
+router.post("/", auth, validateBodyMiddleware, ctrlWrapper(ctrl.addContact));
 
 router.delete("/:contactId", ctrlWrapper(ctrl.deleteContact));
 
