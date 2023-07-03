@@ -1,11 +1,13 @@
-// const validation = require("./validation");
 const ctrlWrapper = require("./ctrlWrapper");
-// const { validationBody, validationStatus } = require("./validation");
 const validationBody = require("./validationBody");
 const validationStatus = require("./validationStatus");
+const validationUserBody = require("./validationUserBody");
+const auth = require("./auth");
 
 module.exports = {
   validationBody,
   validationStatus,
+  validationUserBody,
   ctrlWrapper,
+  auth,
 };
