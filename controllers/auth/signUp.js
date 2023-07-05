@@ -1,3 +1,4 @@
+// const gravatar = require("gravatar");
 const { User } = require("../../models");
 // const bcrypt = require("bcrypt");
 const { CustomHttpError } = require("../../utils");
@@ -12,7 +13,7 @@ const signup = async (req, res, next) => {
   const newUser = new User({ email });
   await newUser.setPassword(password);
   await newUser.save();
-  const { subscription } = await User.findOne({ email });
+  const { subscription, avatarURL } = await User.findOne({ email });
   // const salt = await bcrypt.genSalt(10);
   // const hashedPassword = await bcrypt.hash(password, salt);
   // await User.create({ email, password: hashedPassword });
@@ -23,6 +24,7 @@ const signup = async (req, res, next) => {
       user: {
         email,
         subscription,
+        avatarURL,
       },
     },
   });
