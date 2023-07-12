@@ -1,10 +1,18 @@
 const express = require("express");
 
-const { ctrlWrapper, auth } = require("../../middleware");
+const { ctrlWrapper, auth, upload } = require("../../middleware");
 const { users: ctrl } = require("../../controllers");
 
-const route = express.Router();
+const router = express.Router();
 
-route.get("/current", auth, ctrlWrapper(ctrl.getCurrent));
-route.patch("/", auth, ctrlWrapper(ctrl.subscriptionChange));
-module.exports = route;
+router.get("/current", auth, ctrlWrapper(ctrl.getCurrent));
+
+router.patch("/", auth, ctrlWrapper(ctrl.subscriptionChange));
+
+router.patch(
+  "/avatar",
+  auth,
+  upload().single("avatar"),
+  ctrlWrapper(ctrl.avatarUpdate)
+);
+module.exports = router;
