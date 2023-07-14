@@ -1,5 +1,5 @@
 const express = require("express");
-const joiSchema = require("../../models/user");
+// const joiSchema = require("../../models/user");
 const {
   ctrlWrapper,
   auth,
@@ -7,8 +7,8 @@ const {
   validationBodyEmail,
 } = require("../../middleware");
 const { users: ctrl } = require("../../controllers");
-
-const validateBodyEmailMiddleware = validationBodyEmail(joiSchema);
+const { joiUserSchemaEmail } = require("../../models");
+// const validateBodyEmailMiddleware = validationBodyEmail(joiUserSchema);
 
 const router = express.Router();
 
@@ -26,7 +26,7 @@ router.get("/verify/:verificationToken", ctrlWrapper(ctrl.verifyEmail));
 
 router.post(
   "/verify",
-  validateBodyEmailMiddleware,
+  validationBodyEmail(joiUserSchemaEmail),
   ctrlWrapper(ctrl.verifyEmailNext)
 );
 module.exports = router;

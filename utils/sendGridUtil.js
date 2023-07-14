@@ -17,6 +17,7 @@ const sendSGemail = async (data) => {
 
   try {
     await sgMail.send(msg);
+    console.log("Email was sent");
     return true;
   } catch (error) {
     throw new CustomHttpError(error.code, error.message);

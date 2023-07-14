@@ -3,7 +3,7 @@ const { User } = require("../../models");
 const { v4 } = require("uuid");
 // const bcrypt = require("bcrypt");
 const { CustomHttpError } = require("../../utils");
-const { sendGridUtil } = require("../../utils/sendGridUtil");
+const { sendSGemail } = require("../../utils");
 
 const signup = async (req, res, next) => {
   const { email, password } = req.body;
@@ -25,7 +25,7 @@ const signup = async (req, res, next) => {
     subject: "Please verify your email",
     html: `<a> target="_blank" href="http://localhost/3000/api/users/verify:${verificationToken}"</a>`,
   };
-  await sendGridUtil(mail);
+  await sendSGemail(mail);
   // ==========================
 
   await newUser.save();

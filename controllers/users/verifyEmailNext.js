@@ -1,12 +1,14 @@
 // const { v4 } = require("uuid");
-const sendGridUtil = require("../../utils");
-const User = require("../../models/user");
+const { sendSGemail } = require("../../utils");
+// const User = require("../../models/user");
+const { User } = require("../../models");
 const { CustomHttpError } = require("../../utils");
 
 const verifyEmailNext = async (req, res) => {
   const { email } = req.body;
 
   const currentUser = await User.findOne({ email });
+  // console.log(currentUser);
   if (!currentUser) {
     throw new CustomHttpError(400, "not Found");
   }
@@ -21,7 +23,7 @@ const verifyEmailNext = async (req, res) => {
     subject: "Please verify your email",
     html: `<a> target="_blank" href="http://localhost/3000/api/users/verify:${currentUser.verificationToken}"</a>`,
   };
-  await sendGridUtil(mail);
+  await sendSGemail(mail);
   res.status(200).json({
     result: {
       code: 200,

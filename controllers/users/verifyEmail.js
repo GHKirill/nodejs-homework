@@ -1,4 +1,4 @@
-const User = require("../../models/user");
+const { User } = require("../../models");
 const { CustomHttpError } = require("../../utils");
 
 const verifyEmail = async (req, res) => {
