@@ -1,7 +1,9 @@
 // const gravatar = require("gravatar");
 const { User } = require("../../models");
+const { v4 } = require("uuid");
 // const bcrypt = require("bcrypt");
 const { CustomHttpError } = require("../../utils");
+const { sendGridUtil } = require("../../utils/sendGridUtil");
 
 const signup = async (req, res, next) => {
   const { email, password } = req.body;
@@ -10,8 +12,22 @@ const signup = async (req, res, next) => {
     throw new CustomHttpError(409, `Email ${email} in use`);
   }
 
-  const newUser = new User({ email });
+  const verificationToken = v4();
+
+  const newUser = new User({ email, verificationToken });
   await newUser.setPassword(password);
+
+  // ==========================
+  // const verifyToken = v4();
+  // await newUser.setVerifyToken(verifyToken);
+  const mail = {
+    to: email,
+    subject: "Please verify your email",
+    html: `<a> target="_blank" href="http://localhost/3000/api/users/verify:${verificationToken}"</a>`,
+  };
+  await sendGridUtil(mail);
+  // ==========================
+
   await newUser.save();
   const { subscription, avatarURL } = await User.findOne({ email });
   // const salt = await bcrypt.genSalt(10);
@@ -25,6 +41,7 @@ const signup = async (req, res, next) => {
         email,
         subscription,
         avatarURL,
+        verificationToken,
       },
     },
   });

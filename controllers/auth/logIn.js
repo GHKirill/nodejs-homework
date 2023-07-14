@@ -8,8 +8,11 @@ const logIn = async (req, res, next) => {
   const { email, password } = req.body;
   const candidate = await User.findOne({ email });
 
-  if (!candidate || !candidate.checkPassword(password)) {
-    throw new CustomHttpError(401, "Email or password is wrong");
+  if (!candidate || !candidate.verify || !candidate.checkPassword(password)) {
+    throw new CustomHttpError(
+      401,
+      "Email is wrong or not verify, or password is wrong"
+    );
   }
   const payload = {
     id: candidate._id,
